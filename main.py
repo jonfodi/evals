@@ -20,7 +20,8 @@ You must return the response in the following JSON format:
 {"answer": "Paris"}
 """
 
-TEST_EXAMPLES = [
+TEST_EXAMPLES = json.loads(
+    [
     {
         "input": "What is the capital of France?",
         "output": "Paris"
@@ -29,7 +30,7 @@ TEST_EXAMPLES = [
         "input": "What is the capital of Germany?",
         "output": "Berlin"
     },
-]
+])
 
 def call_llm(prompt, input):
 
@@ -51,8 +52,7 @@ def test_prompt(prompt, examples):
         llm_response = call_llm(prompt, example["input"])
         json_response = convert_response_to_json(llm_response)
         answer = json_response.get("answer", "")
-        breakpoint()
-        if answer == example["output"]:
+        if answer == example.get("output", ""):
             score += 1
     return score
 
