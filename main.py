@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from openai import OpenAI
-
+import json
 load_dotenv()
 
 openai_client = OpenAI()
@@ -42,12 +42,17 @@ def call_llm(prompt, input):
 
 # create a function that will test the prompt by giving it the test examples and giving a score on 10 for how many it gets right 
 
+def convert_response_to_json(response):
+    return json.loads(response)
+
 def test_prompt(prompt, examples):
     score = 0
     for example in examples:
-        response = call_llm(prompt, example["input"])
+        llm_response = call_llm(prompt, example["input"])
+        json_response = convert_response_to_json(llm_response)
+        answer = json_response.get("answer", "")
         breakpoint()
-        if response == example["output"]:
+        if answer == example["output"]:
             score += 1
     return score
 
