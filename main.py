@@ -3,20 +3,11 @@ from openai import OpenAI
 
 load_dotenv()
 
-openai_client = OpenAI(model="gpt-4o-mini")
+openai_client = OpenAI()
 # goal - test a prompt by giving it 10 examples and giving a score on 10 for how many it gets right 
 # 
 
-response = openai_client.chat.completions.create(
-    model="gpt-4.1",
-    messages=[
-        {
-            "role": "user",
-            "content": ""
-        }
-    ])
 
-print(response.output_text)
 TEST_PROMPT = """
 You are a geography expert. You must return valid JSON. 
 
@@ -41,15 +32,13 @@ TEST_EXAMPLES = [
 ]
 
 def call_llm(prompt, input):
-    response = openai.ChatCompletion.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": prompt},
-            {"role": "user", "content": examples}
-        ]
-    )
-    return response.choices[0].message.content
 
+    response = openai_client.responses.create(
+        model="gpt-4.1",
+        instructions=prompt,
+        input=input
+    )
+    return response.output_text
 
 # create a function that will test the prompt by giving it the test examples and giving a score on 10 for how many it gets right 
 
@@ -57,6 +46,7 @@ def test_prompt(prompt, examples):
     score = 0
     for example in examples:
         response = call_llm(prompt, example["input"])
+        breakpoint()
         if response == example["output"]:
             score += 1
     return score
