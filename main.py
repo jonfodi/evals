@@ -1,6 +1,22 @@
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+
+openai_client = OpenAI(model="gpt-4o-mini")
 # goal - test a prompt by giving it 10 examples and giving a score on 10 for how many it gets right 
 # 
 
+response = openai_client.chat.completions.create(
+    model="gpt-4.1",
+    messages=[
+        {
+            "role": "user",
+            "content": ""
+        }
+    ])
+
+print(response.output_text)
 TEST_PROMPT = """
 You are a geography expert. You must return valid JSON. 
 
