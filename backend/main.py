@@ -46,8 +46,6 @@ def get_provider(model_provider: ModelProvider) -> LLMProvider:
        return OpenAIProvider()
    elif model_provider == ModelProvider.ANTHROPIC:
        return AnthropicProvider()
-   else:
-       raise ValueError(f"Unknown provider: { model_provider}")
 
 
 def convert_response_to_json(response):
