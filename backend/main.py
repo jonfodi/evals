@@ -63,25 +63,18 @@ def test_prompt(prompt, examples, model_provider: ModelProvider):
     percentage = (score / len(examples)) * 100
     return percentage
 
-
-# ENDPOINT
-def test_prompts(prompts, examples, model_provider: ModelProvider):
+def test_prompts(prompts: list[str], examples, model_provider: ModelProvider):
     """
-    Test one or multiple prompts and return percentage scores.
+    Test multiple prompts and return percentage scores.
     
     Args:
-        prompts: Single prompt string or list of prompt strings
+        prompts: List of prompt strings
         examples: List of test examples
         model_provider: ModelProvider enum
     
     Returns:
         Dictionary mapping prompt index to percentage score
     """
-    # Handle single prompt case - convert to list
-    if isinstance(prompts, str):
-        prompts = [prompts]
-    
-    # Test each prompt
     percentages = {}
     for i, prompt in enumerate(prompts):
         percentage = test_prompt(prompt, examples, model_provider)
@@ -90,20 +83,10 @@ def test_prompts(prompts, examples, model_provider: ModelProvider):
     
     return percentages
 
-TEST_PROMPT_1 = """
+TEST_PROMPT = """
 You are a geography expert. You must return valid JSON. 
 
 You will be asked about the capitals of countries. 
-
-You must provide a one word response with the capital of the country. 
-
-You must return the response in the following JSON format:
-
-{"answer": "Paris"}
-"""
-
-TEST_PROMPT_2 = """
-You must return valid JSON. 
 
 You must provide a one word response with the capital of the country. 
 
@@ -116,15 +99,15 @@ with open('test_examples.json', 'r') as f:
     TEST_EXAMPLES = json.load(f)
 
 if __name__ == "__main__":
-    # Test single prompt
+    # Test single prompt (now requires list)
     print("Testing single prompt:")
-    result = test_prompts(TEST_PROMPT, TEST_EXAMPLES, ModelProvider.OPENAI)
+    result = test_prompts([TEST_PROMPT_1], TEST_EXAMPLES, ModelProvider.OPENAI)
     print(f"OpenAI result: {result}")
     
-    result = test_prompts(TEST_PROMPT, TEST_EXAMPLES, ModelProvider.ANTHROPIC)
+    result = test_prompts([TEST_PROMPT_1], TEST_EXAMPLES, ModelProvider.ANTHROPIC)
     print(f"Anthropic result: {result}")
     
-    # Example of testing multiple prompts
-    # multiple_prompts = [TEST_PROMPT, modified_prompt, another_prompt]
-    # results = test_prompts(multiple_prompts, TEST_EXAMPLES, ModelProvider.OPENAI)
-    # print(f"Multiple prompts results: {results}")
+    # Test multiple prompts
+    print("Testing multiple prompts:")
+    results = test_prompts([TEST_PROMPT_1, TEST_PROMPT_2], TEST_EXAMPLES, ModelProvider.OPENAI)
+    print(f"Multiple prompts results: {results}")
