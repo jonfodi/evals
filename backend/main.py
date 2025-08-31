@@ -47,7 +47,13 @@ def get_provider(model_provider: ModelProvider) -> LLMProvider:
    elif model_provider == ModelProvider.ANTHROPIC:
        return AnthropicProvider()
    else:
-       raise ValueError(f"Unknown provider: {model_provider}")
+       raise ValueError(f"Unknown provider: { model_provider}")
+
+def get_json_response(response):
+    try:
+        return json.loads(response)
+    except json.JSONDecodeError:
+        return None
 
 def convert_response_to_json(response):
     return json.loads(response)
@@ -61,7 +67,8 @@ def test_prompt(prompt, examples, model_provider: ModelProvider):
        answer = json_response.get("answer", "")
        if answer == example.get("output", ""):
            score += 1
-   return score
+   percentage = (score / len(examples)) * 100
+   return percentage
 
 
 
