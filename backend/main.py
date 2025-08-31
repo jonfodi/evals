@@ -1,6 +1,11 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 import json
+from openai import OpenAI
+import anthropic
+import dotenv
+
+dotenv.load_dotenv()
 
 class ModelProvider(Enum):
    OPENAI = "openai"
@@ -58,7 +63,6 @@ def test_prompt(prompt, examples, model_provider: ModelProvider):
            score += 1
    return score
 
-# Usage
 
 
 TEST_PROMPT = """
@@ -76,5 +80,7 @@ You must return the response in the following JSON format:
 with open('test_examples.json', 'r') as f:
     TEST_EXAMPLES = json.load(f)
 
-print(test_prompt(TEST_PROMPT, TEST_EXAMPLES, ModelProvider.OPENAI))
-print(test_prompt(TEST_PROMPT, TEST_EXAMPLES, ModelProvider.ANTHROPIC))
+if __name__ == "__main__":
+
+    print(test_prompt(TEST_PROMPT, TEST_EXAMPLES, ModelProvider.OPENAI))
+    print(test_prompt(TEST_PROMPT, TEST_EXAMPLES, ModelProvider.ANTHROPIC))
