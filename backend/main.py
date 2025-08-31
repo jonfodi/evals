@@ -49,11 +49,6 @@ def get_provider(model_provider: ModelProvider) -> LLMProvider:
    else:
        raise ValueError(f"Unknown provider: { model_provider}")
 
-def get_json_response(response):
-    try:
-        return json.loads(response)
-    except json.JSONDecodeError:
-        return None
 
 def convert_response_to_json(response):
     return json.loads(response)
