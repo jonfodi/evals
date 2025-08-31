@@ -31,8 +31,6 @@ def call_llm(prompt, input):
     )
     return response.output_text
 
-# create a function that will test the prompt by giving it the test examples and giving a score on 10 for how many it gets right 
-
 def convert_response_to_json(response):
     return json.loads(response)
 
