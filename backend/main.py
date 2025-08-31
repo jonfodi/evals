@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from openai import OpenAI
+import anthropic
 import json
 load_dotenv()
 
@@ -22,7 +23,7 @@ You must return the response in the following JSON format:
 with open('test_examples.json', 'r') as f:
     TEST_EXAMPLES = json.load(f)
 
-def call_llm(prompt, input):
+def call_openai(prompt, input):
 
     response = openai_client.responses.create(
         model="gpt-4.1",
@@ -34,10 +35,28 @@ def call_llm(prompt, input):
 def convert_response_to_json(response):
     return json.loads(response)
 
+def call_anthropic(prompt, input):
+    response = anthropic.Anthropic().messages.create(
+        model="claude-sonnet-4-20250514",
+        max_tokens=1024,
+        messages=[
+            {f"role": "user", "content": input},            
+        ],
+        system=[
+            {
+                "text": prompt,
+                "type": "text"
+            }
+        ]
+    )
+    return response.content[0].text
+
+
 def test_prompt(prompt, examples):
     score = 0
+    
     for example in examples:
-        llm_response = call_llm(prompt, example["input"])
+        llm_response = call_anthropic(prompt, example["input"])
         json_response = convert_response_to_json(llm_response)
         answer = json_response.get("answer", "")
         if answer == example.get("output", ""):
