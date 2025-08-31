@@ -83,10 +83,21 @@ def test_prompts(prompts: list[str], examples, model_provider: ModelProvider):
     
     return percentages
 
-TEST_PROMPT = """
+TEST_PROMPT_1 = """
 You are a geography expert. You must return valid JSON. 
 
 You will be asked about the capitals of countries. 
+
+You must provide a one word response with the capital of the country. 
+
+You must return the response in the following JSON format:
+
+{"answer": "Paris"}
+"""
+
+TEST_PROMPT_2 = """
+
+You must return valid JSON. 
 
 You must provide a one word response with the capital of the country. 
 
@@ -100,12 +111,12 @@ with open('test_examples.json', 'r') as f:
 
 if __name__ == "__main__":
     # Test single prompt (now requires list)
-    print("Testing single prompt:")
-    result = test_prompts([TEST_PROMPT_1], TEST_EXAMPLES, ModelProvider.OPENAI)
-    print(f"OpenAI result: {result}")
+    # print("Testing single prompt:")
+    # result = test_prompts([TEST_PROMPT_1], TEST_EXAMPLES, ModelProvider.OPENAI)
+    # print(f"OpenAI result: {result}")
     
-    result = test_prompts([TEST_PROMPT_1], TEST_EXAMPLES, ModelProvider.ANTHROPIC)
-    print(f"Anthropic result: {result}")
+    # result = test_prompts([TEST_PROMPT_1], TEST_EXAMPLES, ModelProvider.ANTHROPIC)
+    # print(f"Anthropic result: {result}")
     
     # Test multiple prompts
     print("Testing multiple prompts:")
