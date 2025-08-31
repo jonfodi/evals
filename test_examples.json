@@ -1,0 +1,10 @@
+[
+    {
+        "input": "What is the capital of France?",
+        "output": "Paris"
+    },
+    {
+        "input": "What is the capital of Germany?",
+        "output": "Berlin"
+    }
+]

@@ -4,10 +4,9 @@ import json
 load_dotenv()
 
 openai_client = OpenAI()
-# goal - test a prompt by giving it 10 examples and giving a score on 10 for how many it gets right 
-# 
 
 
+# PROMPT THAT WE ARE TESTING
 TEST_PROMPT = """
 You are a geography expert. You must return valid JSON. 
 
@@ -20,17 +19,8 @@ You must return the response in the following JSON format:
 {"answer": "Paris"}
 """
 
-TEST_EXAMPLES = json.loads(
-    [
-    {
-        "input": "What is the capital of France?",
-        "output": "Paris"
-    },
-    {
-        "input": "What is the capital of Germany?",
-        "output": "Berlin"
-    },
-])
+with open('test_examples.json', 'r') as f:
+    TEST_EXAMPLES = json.load(f)
 
 def call_llm(prompt, input):
 
@@ -55,7 +45,6 @@ def test_prompt(prompt, examples):
         if answer == example.get("output", ""):
             score += 1
     return score
-
 
 
 print(test_prompt(TEST_PROMPT, TEST_EXAMPLES))
