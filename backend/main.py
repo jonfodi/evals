@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+import json
 
 class ModelProvider(Enum):
    OPENAI = "openai"
@@ -43,6 +44,9 @@ def get_provider(model_provider: ModelProvider) -> LLMProvider:
    else:
        raise ValueError(f"Unknown provider: {model_provider}")
 
+def convert_response_to_json(response):
+    return json.loads(response)
+
 def test_prompt(prompt, examples, model_provider: ModelProvider):
    provider = get_provider(model_provider)
    score = 0
@@ -55,5 +59,22 @@ def test_prompt(prompt, examples, model_provider: ModelProvider):
    return score
 
 # Usage
+
+
+TEST_PROMPT = """
+You are a geography expert. You must return valid JSON. 
+
+You will be asked about the capitals of countries. 
+
+You must provide a one word response with the capital of the country. 
+
+You must return the response in the following JSON format:
+
+{"answer": "Paris"}
+"""
+
+with open('test_examples.json', 'r') as f:
+    TEST_EXAMPLES = json.load(f)
+
 print(test_prompt(TEST_PROMPT, TEST_EXAMPLES, ModelProvider.OPENAI))
 print(test_prompt(TEST_PROMPT, TEST_EXAMPLES, ModelProvider.ANTHROPIC))
